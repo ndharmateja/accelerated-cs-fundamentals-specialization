@@ -5,13 +5,18 @@
  * Hello World Project
  *
  * @author Eric Huber - University of Illinois staff - July 2019
-**/
+ **/
 
 // You need to include some header(s) here!
-
+#include <iostream>
 
 // You need to define your main() function here!
-
+int main(int argc, char const *argv[])
+{
+    std::cout << "Hello, world!" << std::endl;
+    std::cout << "Greetings from Illinois!" << std::endl;
+    return 0;
+}
 
 // Notes:
 
@@ -27,4 +32,3 @@
 
 // Also note, the autograder does not care about letter case, punctuation,
 // or spacing! But it does care about spelling and the order of words!
-
