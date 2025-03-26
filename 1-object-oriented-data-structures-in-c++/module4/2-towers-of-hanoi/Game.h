@@ -13,4 +13,5 @@ public:
 
 private:
     std::vector<Stack> stacks_;
+    void move(int from, int to, int temp, int numBlocks);
 };

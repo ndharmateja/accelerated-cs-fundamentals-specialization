@@ -28,7 +28,20 @@ std::ostream &operator<<(std::ostream &os, const Game &game)
     return os;
 }
 
+void Game::move(int from, int to, int temp, int numBlocks)
+{
+    if (numBlocks == 0)
+        return;
+
+    // Move n-1 blocks from 'from' to 'temp' using 'to' as temp
+    move(from, temp, to, numBlocks - 1);
+    // Move 1 block from 'from' to 'to' using 'temp' as temp
+    this->stacks_[to].push_back(this->stacks_[from].removeTop());
+    // Move the n-1 blocks from 'temp' to 'to' using 'from' as temp
+    move(temp, to, from, numBlocks - 1);
+}
+
 void Game::solve()
 {
-    // TODO
+    move(0, 2, 1, 4);
 }
