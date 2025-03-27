@@ -93,12 +93,29 @@ PNG createSpotlight(PNG image, int centerX, int centerY)
  * @param image A PNG object which holds the image data to be modified.
  *
  * @return The illinify'd image.
-**/
-PNG illinify(PNG image) {
+ **/
+PNG illinify(PNG image)
+{
+    double illiniOrangeHue = 11;
+    double illiniBlueHue = 216;
 
-  return image;
+    for (unsigned x = 0; x < image.width(); x++)
+    {
+        for (unsigned y = 0; y < image.height(); y++)
+        {
+            HSLAPixel &pixel = image.getPixel(x, y);
+            double hue = pixel.h;
+
+            // 0 to 113 or 294 to 360 => closer to 11
+            if ((hue >= 0 && hue <= 113) || (hue >= 294 && hue <= 360))
+                pixel.h = illiniOrangeHue;
+            // otherwise closer to 216
+            else
+                pixel.h = illiniBlueHue;
+        }
+    }
+    return image;
 }
- 
 
 /**
 * Returns an immge that has been watermarked by another image.
