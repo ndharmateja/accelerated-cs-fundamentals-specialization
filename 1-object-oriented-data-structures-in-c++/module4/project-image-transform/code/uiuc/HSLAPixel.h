@@ -10,10 +10,11 @@
 #include <iostream>
 #include <sstream>
 
-namespace uiuc {
-
-  // Put your HSLAPixel class definition here.
-  // (Remember to end it with a semicolon!)
-
-
+namespace uiuc
+{
+    class HSLAPixel
+    {
+    public:
+        double h, s, l, a;
+    };
 }
