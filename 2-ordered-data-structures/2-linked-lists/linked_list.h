@@ -20,6 +20,7 @@ public:
 
     T *front() const;
     T *back() const;
+    T *operator[](unsigned index);
 
     bool contains(T *data) const;
     void remove(T *data);
@@ -143,6 +144,21 @@ T *LinkedList<T>::back() const
     return tail_->data_;
 }
 
+template <typename T>
+T *LinkedList<T>::operator[](unsigned index)
+{
+    if (index >= size_)
+        throw std::runtime_error("Invalid index");
+
+    // Move curr index number of times to get curr to the correct index
+    ListNode<T> *curr = head_;
+    for (int i = 0; i < index; i++)
+    {
+        curr = curr->next_;
+    }
+
+    return curr->data_;
+}
 template <typename T>
 bool LinkedList<T>::is_empty() const { return size_ == 0; }
 
