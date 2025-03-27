@@ -126,7 +126,7 @@ void test_clear()
 void test_insert_at()
 {
     LinkedList<int> list;
-    int a = 10, b = 20, c = 30, d = 40, e = 50;
+    int a = 10, b = 20, c = 30, d = 40, e = 50, f = 60;
 
     list.push_back(&a);
     list.push_back(&c);
@@ -170,6 +170,26 @@ void test_remove_at()
     std::cout << "test_remove_at passed" << std::endl;
 }
 
+void test_stress()
+{
+    LinkedList<int> list;
+    int values[1000];
+    for (int i = 0; i < 1000; i++)
+    {
+        values[i] = i;
+        list.push_back(&values[i]);
+    }
+    assert(list.size() == 1000);
+    for (int i = 0; i < 500; i++)
+    {
+        list.remove_at(0);
+    }
+    assert(list.size() == 500);
+    list.clear();
+    assert(list.is_empty());
+    std::cout << "test_stress passed" << std::endl;
+}
+
 int main()
 {
     test_constructor();
@@ -183,6 +203,7 @@ int main()
     test_clear();
     test_insert_at();
     test_remove_at();
+    test_stress();
     std::cout << "All tests passed!" << std::endl;
     return 0;
 }
