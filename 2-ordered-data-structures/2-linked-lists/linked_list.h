@@ -12,6 +12,8 @@ public:
 
     void push_front(T *data);
     void push_back(T *data);
+    void insert_at(unsigned index, T *data);
+    T *remove_at(unsigned index);
     T *pop_front();
     T *pop_back();
 
@@ -122,6 +124,72 @@ T *LinkedList<T>::pop_back()
 
     // Decrement size and delete node
     size_--;
+    delete to_delete;
+    return data;
+}
+
+template <typename T>
+void LinkedList<T>::insert_at(unsigned index, T *data)
+{
+    if (index > size_)
+        throw std::runtime_error("Invalid index");
+
+    if (index == 0)
+    {
+        push_front(data);
+        return;
+    }
+
+    if (index == size_)
+    {
+        push_back(data);
+        return;
+    }
+
+    // At this point size is atleast 2, as one of the above cases
+    // would have been applicable for sizes 0, 1
+
+    // Move curr to the node after which the new node has to be inserted
+    ListNode<T> *curr = head_;
+    for (size_t i = 0; i < index - 1; i++)
+        curr = curr->next_;
+
+    // Insert after curr
+    // Create new node
+    ListNode<T> *new_node = new ListNode<T>(data);
+    size_++;
+    new_node->next_ = curr->next_;
+    curr->next_ = new_node;
+}
+
+template <typename T>
+T *LinkedList<T>::remove_at(unsigned index)
+{
+    if (index >= size_)
+        throw std::runtime_error("Invalid index");
+
+    if (index == 0)
+        return pop_front();
+
+    if (index == size_)
+        return pop_front();
+
+    // At this point size is atleast 3, as one of the above cases
+    // would have been applicable for sizes 0, 1, 2
+
+    // Move curr to the element at index - 1
+    // and delete the next element
+    ListNode<T> *curr = head_;
+    for (size_t i = 0; i < index - 1; i++)
+        curr = curr->next_;
+
+    // Delete node after curr
+    // There would be atleast one node after the one we want to delete
+    // as edge cases were handled already
+    size_--;
+    ListNode<T> *to_delete = curr->next_;
+    T *data = to_delete->data_;
+    curr->next_ = curr->next_->next_;
     delete to_delete;
     return data;
 }
