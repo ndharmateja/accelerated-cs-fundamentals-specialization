@@ -17,8 +17,8 @@ Email:
 (...end multi-line comment.)
 ******************** */
 
-using uiuc::PNG;
 using uiuc::HSLAPixel;
+using uiuc::PNG;
 
 /**
  * Returns an image that has been transformed to grayscale.
@@ -27,24 +27,25 @@ using uiuc::HSLAPixel;
  *
  * @return The grayscale image.
  */
-PNG grayscale(PNG image) {
-  /// This function is already written for you so you can see how to
-  /// interact with our PNG class.
-  for (unsigned x = 0; x < image.width(); x++) {
-    for (unsigned y = 0; y < image.height(); y++) {
-      HSLAPixel & pixel = image.getPixel(x, y);
+PNG grayscale(PNG image)
+{
+    /// This function is already written for you so you can see how to
+    /// interact with our PNG class.
+    for (unsigned x = 0; x < image.width(); x++)
+    {
+        for (unsigned y = 0; y < image.height(); y++)
+        {
+            HSLAPixel &pixel = image.getPixel(x, y);
 
-      // `pixel` is a reference to the memory stored inside of the PNG `image`,
-      // which means you're changing the image directly. No need to `set`
-      // the pixel since you're directly changing the memory of the image.
-      pixel.s = 0;
+            // `pixel` is a reference to the memory stored inside of the PNG `image`,
+            // which means you're changing the image directly. No need to `set`
+            // the pixel since you're directly changing the memory of the image.
+            pixel.s = 0;
+        }
     }
-  }
 
-  return image;
+    return image;
 }
-
-
 
 /**
  * Returns an image with a spotlight centered at (`centerX`, `centerY`).
