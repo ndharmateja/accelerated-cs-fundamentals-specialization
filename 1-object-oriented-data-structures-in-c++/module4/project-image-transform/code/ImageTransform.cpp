@@ -58,7 +58,7 @@ PNG grayscale(PNG image)
  * is a total of `sqrt((3 * 3) + (4 * 4)) = sqrt(25) = 5` pixels away and
  * its luminance is decreased by 2.5% (0.975x its original value).  At a
  * distance over 160 pixels away, the luminance will always decreased by 80%.
- * 
+ *
  * The modified PNG is then returned.
  *
  * @param image A PNG object which holds the image data to be modified.
@@ -67,12 +67,22 @@ PNG grayscale(PNG image)
  *
  * @return The image with a spotlight.
  */
-PNG createSpotlight(PNG image, int centerX, int centerY) {
-
-  return image;
-  
+PNG createSpotlight(PNG image, int centerX, int centerY)
+{
+    for (unsigned x = 0; x < image.width(); x++)
+    {
+        for (unsigned y = 0; y < image.height(); y++)
+        {
+            HSLAPixel &pixel = image.getPixel(x, y);
+            int xDiff = (int)x - centerX;
+            int yDiff = (int)y - centerY;
+            double distanceFromCenter = sqrt(xDiff * xDiff + yDiff * yDiff);
+            double lDecreasePct = min(distanceFromCenter * 0.5, 80.0);
+            pixel.l = (1 - lDecreasePct / 100) * pixel.l;
+        }
+    }
+    return image;
 }
- 
 
 /**
  * Returns a image transformed to Illini colors.
