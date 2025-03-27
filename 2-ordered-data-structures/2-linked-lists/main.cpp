@@ -123,6 +123,50 @@ void test_clear()
     std::cout << "test_clear passed" << std::endl;
 }
 
+void test_insert_at()
+{
+    LinkedList<int> list;
+    int a = 10, b = 20, c = 30, d = 40;
+
+    list.insert_at(0, &a);
+    assert(*list[0] == 10);
+
+    list.insert_at(1, &b);
+    assert(*list[1] == 20);
+
+    list.insert_at(1, &c);
+    assert(*list[0] == 10);
+    assert(*list[1] == 30);
+    assert(*list[2] == 20);
+
+    list.insert_at(3, &d);
+    assert(*list[3] == 40);
+
+    std::cout << "test_insert_at passed" << std::endl;
+}
+
+void test_remove_at()
+{
+    LinkedList<int> list;
+    int a = 10, b = 20, c = 30, d = 40;
+
+    list.push_back(&a);
+    list.push_back(&b);
+    list.push_back(&c);
+    list.push_back(&d);
+
+    assert(*list.remove_at(2) == 30);
+    assert(list.size() == 3);
+
+    assert(*list.remove_at(0) == 10);
+    assert(list.size() == 2);
+
+    assert(*list.remove_at(1) == 40);
+    assert(list.size() == 1);
+
+    std::cout << "test_remove_at passed" << std::endl;
+}
+
 int main()
 {
     test_constructor();
@@ -134,6 +178,8 @@ int main()
     test_contains();
     test_remove();
     test_clear();
+    test_insert_at();
+    test_remove_at();
     std::cout << "All tests passed!" << std::endl;
     return 0;
 }
