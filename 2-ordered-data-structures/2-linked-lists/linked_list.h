@@ -171,8 +171,10 @@ T *LinkedList<T>::remove_at(unsigned index)
     if (index == 0)
         return pop_front();
 
-    if (index == size_)
-        return pop_front();
+    // there won't be any overflows here because
+    // size is atleast 2 as size 1 would be handled by above case
+    if (index == size_ - 1)
+        return pop_back();
 
     // At this point size is atleast 3, as one of the above cases
     // would have been applicable for sizes 0, 1, 2
