@@ -234,56 +234,95 @@ void LinkedList<T>::insertOrdered(const T &newData)
  ********************************************************************/
 
 template <typename T>
-LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
+LinkedList<T> LinkedList<T>::merge(const LinkedList<T> &other) const
+{
 
-  // You can't edit the original instance of LinkedList that is calling
-  // merge because the function is marked const, and the "other" input
-  // list is also marked const. However, here we'll make some convenient
-  // "working copies" of the two lists: "*this" refers to the current
-  // list object instance that is calling the merge member function, and
-  // "other" refers to the list that was passed as an argument:
-  LinkedList<T> left = *this;
-  LinkedList<T> right = other;
+    // You can't edit the original instance of LinkedList that is calling
+    // merge because the function is marked const, and the "other" input
+    // list is also marked const. However, here we'll make some convenient
+    // "working copies" of the two lists: "*this" refers to the current
+    // list object instance that is calling the merge member function, and
+    // "other" refers to the list that was passed as an argument:
+    LinkedList<T> left = *this;
+    LinkedList<T> right = other;
 
-  // So if this function was called as "A.merge(B)", then now, "left"
-  // is a temporary copy of the "A" and "right" is a temporary copy
-  // of the "B".
-  
-  // We will also create an empty list called "merged" where we can build
-  // the final result we want. This is what we will return at the end of
-  // the function.
-  LinkedList<T> merged;
+    // So if this function was called as "A.merge(B)", then now, "left"
+    // is a temporary copy of the "A" and "right" is a temporary copy
+    // of the "B".
 
-  // -----------------------------------------------------------
-  // TODO: Your code here!
-  // -----------------------------------------------------------
-  // Please implement this function according to the description
-  // above and in the instructions PDF.
+    // We will also create an empty list called "merged" where we can build
+    // the final result we want. This is what we will return at the end of
+    // the function.
+    LinkedList<T> merged;
 
-  // Hints:
-  // 1. Assuming that the left and right lists are already sorted, remember
-  //    that the smallest items are already available at the front. You can
-  //    access them immediately.
-  // 2. Think of which item needs to be placed first in the merged list.
-  //    Then think about what item should be placed second. You need to
-  //    think carefully about which list to take from next after you take
-  //    each single item.
-  // 3. You can do this while walking down the left and right lists exactly
-  //    once. Do not loop over the lists multiple times. If you are doing
-  //    that, your implementation is probably already running in O(n^2)
-  //    time or worse, and not O(n).
-  // 4. Remember, DO NOT try to use insertOrdered here. That would be
-  //    very slow.
+    if (left.empty())
+    {
+        merged = right;
+        return merged;
+    }
 
-  // -----------------------------------------------------------
+    if (right.empty())
+    {
+        merged = left;
+        return merged;
+    }
 
-  // We return the merged list by value here. It may be copied out of the
-  // function, but usually the compiler will optimize this to automatically
-  // create it directly in the correct memory space outside without copying.
-  // Don't worry about the speed of that right now. (By the way, did you
-  // notice that all of our nodes are created on the heap? The part of the
-  // list that we pass back is really small; it just contains two pointers
-  // and an int.)
-  return merged;
+    Node *lp = left.head_;
+    Node *rp = right.head_;
+    while (lp && rp)
+    {
+        if (lp->data <= rp->data)
+        {
+            merged.pushBack(lp->data);
+            lp = lp->next;
+        }
+        else
+        {
+            merged.pushBack(rp->data);
+            rp = rp->next;
+        }
+    }
+    while (lp)
+    {
+        merged.pushBack(lp->data);
+        lp = lp->next;
+    }
+    while (rp)
+    {
+        merged.pushBack(rp->data);
+        rp = rp->next;
+    }
+    return merged;
+
+    // -----------------------------------------------------------
+    // TODO: Your code here!
+    // -----------------------------------------------------------
+    // Please implement this function according to the description
+    // above and in the instructions PDF.
+
+    // Hints:
+    // 1. Assuming that the left and right lists are already sorted, remember
+    //    that the smallest items are already available at the front. You can
+    //    access them immediately.
+    // 2. Think of which item needs to be placed first in the merged list.
+    //    Then think about what item should be placed second. You need to
+    //    think carefully about which list to take from next after you take
+    //    each single item.
+    // 3. You can do this while walking down the left and right lists exactly
+    //    once. Do not loop over the lists multiple times. If you are doing
+    //    that, your implementation is probably already running in O(n^2)
+    //    time or worse, and not O(n).
+    // 4. Remember, DO NOT try to use insertOrdered here. That would be
+    //    very slow.
+
+    // -----------------------------------------------------------
+
+    // We return the merged list by value here. It may be copied out of the
+    // function, but usually the compiler will optimize this to automatically
+    // create it directly in the correct memory space outside without copying.
+    // Don't worry about the speed of that right now. (By the way, did you
+    // notice that all of our nodes are created on the heap? The part of the
+    // list that we pass back is really small; it just contains two pointers
+    // and an int.)
+    return merged;
 }
-
