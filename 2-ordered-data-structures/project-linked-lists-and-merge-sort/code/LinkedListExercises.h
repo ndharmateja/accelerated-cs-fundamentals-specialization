@@ -7,7 +7,7 @@
  *
  * @author Eric Huber - University of Illinois staff
  *
-**/
+ **/
 
 /********************************************************************
   Week 1: Linked List and Merge Sort Exercises
@@ -79,55 +79,86 @@
  ********************************************************************/
 
 template <typename T>
-void LinkedList<T>::insertOrdered(const T& newData) {
+void LinkedList<T>::insertOrdered(const T &newData)
+{
 
-  // -----------------------------------------------------------
-  // TODO: Your code here!
-  // -----------------------------------------------------------
-  // Please implement this function according to the description
-  // above and in the instructions PDF.
+    if (empty() || newData <= head_->data)
+    {
+        pushFront(newData);
+        return;
+    }
+    if (newData >= tail_->data)
+    {
+        pushBack(newData);
+        return;
+    }
 
-  // Hints:
-  // Make your new node on the heap and then find where it needs to
-  // go in the list. A good way to do this is by considering special
-  // base cases first, then walk the list from front to back and find
-  // the earliest position where you should insert the new node.
-  
-  // When you insert the node, make sure to update any and all pointers
-  // between it and adjacent nodes accordingly (next and prev pointers).
-  // You may also need to update the head_ and tail_ pointers in some
-  // cases. Also update the size_ variable of the list.
+    // At this point list's size is atleast 2
+    // And newData is greater than tail's value
+    // and lesser than head's value
+    // Find the node that is greater than or equal to newData and insert
+    // before that
+    Node *newNode = new Node(newData);
+    size_++;
+    Node *prev = head_;
+    Node *curr = head_->next;
+    while (curr->data <= newData)
+    {
+        prev = curr;
+        curr = curr->next;
+    }
 
-  // There are explicit examples of how to do all those things in the
-  // other provided code for this project!
+    // Insert new node between prev and curr
+    newNode->prev = prev;
+    prev->next = newNode;
+    newNode->next = curr;
+    curr->prev = newNode;
+    // -----------------------------------------------------------
+    // TODO: Your code here!
+    // -----------------------------------------------------------
+    // Please implement this function according to the description
+    // above and in the instructions PDF.
 
-  // More hints:
-  
-  // First, practice your technique for traversing the list from front
-  // to back. You can see examples of several ways to do this throughout
-  // the provided code for this project. We recommend that you try using
-  // a temporary pointer that you update to track your position as you
-  // traverse from node to node.
-  
-  // Consider all the cases that can happen when you're trying to insert
-  // the new node. Is the list currently empty? Does the new node go
-  // at the beginning? Does it go somewhere in the middle? Does it go
-  // at the end? Remember that this is a doubly-linked list, so there
-  // may be prev and next pointers to adjust on both sides of the node
-  // that you insert.
+    // Hints:
+    // Make your new node on the heap and then find where it needs to
+    // go in the list. A good way to do this is by considering special
+    // base cases first, then walk the list from front to back and find
+    // the earliest position where you should insert the new node.
 
-  // Be careful to make your conditional cases mutually exclusive when
-  // necessary. Are you using "else" where you should?
+    // When you insert the node, make sure to update any and all pointers
+    // between it and adjacent nodes accordingly (next and prev pointers).
+    // You may also need to update the head_ and tail_ pointers in some
+    // cases. Also update the size_ variable of the list.
 
-  // Don't dereference a null pointer, ever! Always make sure the logic
-  // checks for that before dereferencing. This is the most common cause
-  // of crashes. The test program will show you which test cases are
-  // causing you issues with that. A common issue is that when students
-  // traverse an empty list or when they traverse to the end of the list,
-  // they don't handle the null pointer at the tail properly. Be careful
-  // to update all next, prev, head_, and tail_ pointers as needed on your
-  // new node or on those existing nodes that are adjacent to the new node.
+    // There are explicit examples of how to do all those things in the
+    // other provided code for this project!
 
+    // More hints:
+
+    // First, practice your technique for traversing the list from front
+    // to back. You can see examples of several ways to do this throughout
+    // the provided code for this project. We recommend that you try using
+    // a temporary pointer that you update to track your position as you
+    // traverse from node to node.
+
+    // Consider all the cases that can happen when you're trying to insert
+    // the new node. Is the list currently empty? Does the new node go
+    // at the beginning? Does it go somewhere in the middle? Does it go
+    // at the end? Remember that this is a doubly-linked list, so there
+    // may be prev and next pointers to adjust on both sides of the node
+    // that you insert.
+
+    // Be careful to make your conditional cases mutually exclusive when
+    // necessary. Are you using "else" where you should?
+
+    // Don't dereference a null pointer, ever! Always make sure the logic
+    // checks for that before dereferencing. This is the most common cause
+    // of crashes. The test program will show you which test cases are
+    // causing you issues with that. A common issue is that when students
+    // traverse an empty list or when they traverse to the end of the list,
+    // they don't handle the null pointer at the tail properly. Be careful
+    // to update all next, prev, head_, and tail_ pointers as needed on your
+    // new node or on those existing nodes that are adjacent to the new node.
 }
 
 /********************************************************************
@@ -184,7 +215,7 @@ void LinkedList<T>::insertOrdered(const T& newData) {
   A correct implementation of this function has O(n) time complexity
   for a list of length n. That is, in the worst case, you would
   traverse each element of the list some constant number of times.
-  
+
   Important notes for getting the correct running time:
 
   1. Since both lists being merged are already sorted themselves, there
