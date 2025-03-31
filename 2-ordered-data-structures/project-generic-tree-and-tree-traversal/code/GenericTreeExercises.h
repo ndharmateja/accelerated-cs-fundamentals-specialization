@@ -90,14 +90,24 @@ static void treeFactory(GenericTree<int> &tree)
 
     //      *****************************************************
     //                           EXERCISE 1
-    //    TODO: Your work here! You should edit this function body!
     //      *****************************************************
 
-    // Edit the function body only. You should leave the function header alone.
-    // Build the contents of tree so that it matches the diagram above
-    // when you print it out. The main() function runs that test for you.
+    // Clear existing tree
+    tree.deleteSubtree(tree.getRootPtr());
 
-    // ...
+    // Create root
+    auto root = tree.createRoot(4);
+
+    // Add children to root
+    auto node8 = root->addChild(8);
+    root->addChild(15);
+
+    // Add children to node with 8
+    auto node16 = node8->addChild(16);
+    node8->addChild(23);
+
+    // Add child to node with 16
+    node16->addChild(42);
 }
 
 // treeFactoryTest: This function demonstrates the execution of treeFactory
