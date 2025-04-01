@@ -99,8 +99,9 @@ int lookupWithFallback(const StringIntMap &wordcount_map, const std::string &key
     // =================================================
     // EXERCISE 2 WORKSPACE: YOUR CODE HERE
     // =================================================
-
-    return -1337; // Change this!
+    if (wordcount_map.count(key))
+        return wordcount_map.at(key);
+    return fallbackVal;
 }
 
 // =========================================================================
