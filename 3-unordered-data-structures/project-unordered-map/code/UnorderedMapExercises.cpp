@@ -219,8 +219,8 @@ int memoizedLongestPalindromeLength(LengthMemo &memo, const std::string &str, in
         // new in this case. So, we also won't store anything new in the table in
         // this case, only return what's already stored at this key in the map.
 
-        return -1337; // Hint: You need to change this!
-                      // ====================================================================
+        return memo.at(pairKey); // Hint: You need to change this!
+                                 // ====================================================================
     }
 
     // If the memoization table didn't have an entry for this key yet,
@@ -330,6 +330,8 @@ int memoizedLongestPalindromeLength(LengthMemo &memo, const std::string &str, in
     // =======================================================================
     // EXERCISE 3 - PART B - YOUR CODE HERE!
     //
-    return -1337; // Hint: You need to change this!
-                  // =======================================================================
+    // Hint: You need to change this!
+    // =======================================================================
+    memo[pairKey] = greaterResult;
+    return greaterResult;
 }
