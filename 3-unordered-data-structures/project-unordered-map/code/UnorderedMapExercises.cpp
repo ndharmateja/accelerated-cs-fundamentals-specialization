@@ -7,7 +7,7 @@
  *
  * @author Eric Huber - University of Illinois staff
  *
-**/
+ **/
 
 // Before beginning these exercises, you should read the instructions PDF,
 // and look through the other code files in this directory for examples and
@@ -16,8 +16,6 @@
 #include <iostream>
 
 #include "UnorderedMapCommon.h"
-
-
 
 // =========================================================================
 // EXERCISE 1: makeWordCounts
@@ -50,17 +48,16 @@
 
 // makeWordCounts: Given a vector of (non-unique) strings, returns a
 // StringIntMap where each string is mapped to its number of occurences.
-StringIntMap makeWordCounts(const StringVec& words) {
-  StringIntMap wordcount_map;
+StringIntMap makeWordCounts(const StringVec &words)
+{
+    StringIntMap wordcount_map;
 
-  // =================================================
-  // EXERCISE 1 WORKSPACE: YOUR CODE HERE
-  // =================================================
+    // =================================================
+    // EXERCISE 1 WORKSPACE: YOUR CODE HERE
+    // =================================================
 
-  return wordcount_map;
+    return wordcount_map;
 }
-
-
 
 // =========================================================================
 // EXERCISE 2: lookupWithFallback
@@ -95,16 +92,15 @@ StringIntMap makeWordCounts(const StringVec& words) {
 // that you did not edit the original map.
 // =========================================================================
 
-int lookupWithFallback(const StringIntMap& wordcount_map, const std::string& key, int fallbackVal) {
+int lookupWithFallback(const StringIntMap &wordcount_map, const std::string &key, int fallbackVal)
+{
 
-  // =================================================
-  // EXERCISE 2 WORKSPACE: YOUR CODE HERE
-  // =================================================
+    // =================================================
+    // EXERCISE 2 WORKSPACE: YOUR CODE HERE
+    // =================================================
 
-  return -1337; // Change this!
+    return -1337; // Change this!
 }
-
-
 
 // =========================================================================
 // EXERCISE 3: Memoizing a Function
@@ -165,163 +161,173 @@ int lookupWithFallback(const StringIntMap& wordcount_map, const std::string& key
 // for finding the maximum palindrome substring length.
 // The startTime and maxDuration parameters are used by the grader to make
 // sure your function doesn't accidentally run very slow.
-int memoizedLongestPalindromeLength(LengthMemo& memo, const std::string& str, int leftLimit, int rightLimit, timeUnit startTime, double maxDuration) {
+int memoizedLongestPalindromeLength(LengthMemo &memo, const std::string &str, int leftLimit, int rightLimit, timeUnit startTime, double maxDuration)
+{
 
-  // Check validity of indices for debugging. The indices shouldn't be negative
-  // unless it's the special base case where they cross during recursion.
-  // We handle that case further below.
-  if (leftLimit < 0 && leftLimit <= rightLimit) {
-    throw std::runtime_error("leftLimit negative, but it's not the base case");
-  }
-  if (rightLimit < 0 && leftLimit <= rightLimit) {
-    throw std::runtime_error("rightLimit negative, but it's not the base case");
-  }
-
-  // Apart from that, in the following code, the std::string::at() function
-  // will throw an exception if an index is out of bounds.
-
-  if (false) {
-    // Debugging spam messages
-    int range = rightLimit-leftLimit+1;
-    if (range < 0) range = 0;
-    std::cout << "Considering substring: " << str.substr(leftLimit, range) << std::endl;
-    std::cout << " because l/r limits are: " << leftLimit << " " << rightLimit << std::endl;
-  }
-
-  // It's possible that a student could make a mistake in this function that
-  // would cause it to take even longer than brute force (or never finish).
-  const auto currentTime = getTimeNow();
-  const auto timeElapsed = getMilliDuration(startTime, currentTime);
-  if (timeElapsed > maxDuration) {
-    throw TooSlowException("taking too long");
-  }
-
-  // Here's the memoization key for this pair of limit integers.
-  // IntPair is our type alias for std::pair<int, int>
-  const IntPair pairKey = std::make_pair(leftLimit, rightLimit);
-
-  // The count() function of unordered_map tells us if the key is already in the map.
-  // It returns 1 if found and otherwise 0. (These values convert to true and false.)
-  // (It's important to not just use memo[pairKey] in this check, because that will
-  //  create the entry with a default value if it doesn't already exist!)
-  if (memo.count(pairKey)) {
-
-    // ====================================================================
-    // EXERCISE 3 - PART A - YOUR CODE HERE!
-
-    // We've calculated this subproblem before, and that's why there's a key
-    // for it in the memoization table already. We won't calculate anything
-    // new in this case. So, we also won't store anything new in the table in
-    // this case, only return what's already stored at this key in the map.
-
-    return -1337; // Hint: You need to change this!
-    // ====================================================================
-
-  }
-
-  // If the memoization table didn't have an entry for this key yet,
-  // then we're solving this subproblem for the first time.
-  // Below, we'll record our result to make sure we don't have to solve it again.
-
-  // Base case: Return 0 as the longest palindrome length when the indices cross.
-  // This case could be triggered during our recursive steps defined below.
-  if (leftLimit > rightLimit) {
-    // Since this case already returns in constant time (that is, O(1) time)
-    // without recursing further, we don't really need to memoize it,
-    // but we will anyway as an example. In practice, we could save memory
-    // by not memoizing unless necessary. Another reason why you might want
-    // to memoize every subproblem is to help in reconstructing what the
-    // optimal solution was, after the algorithm finishes running.
-
-    // ====================================================================
-    // EXAMPLE: This base case has already been memoized!
-    // (You DON'T need to edit this code section at all!
-    //  Just pay attention to what's happening here!)
-    memo[pairKey] = 0;
-    return 0;
-    // ====================================================================
-  }
-
-  // Otherwise, we know that leftLimit <= rightLimit.
-
-  // A single-character substring is a palindrome of size 1.
-  // We include the character check with .at() to make sure the string isn't
-  // empty and that the indices are valid.
-  if (leftLimit == rightLimit && str.at(leftLimit) == str.at(rightLimit)) {
-    // Another O(1) return case that we'll memoize anyway for completeness.
-
-    // ====================================================================
-    // EXAMPLE: This base case has already been memoized!
-    // (You DON'T need to edit this code section at all!
-    //  Just pay attention to what's happening here!)
-    memo[pairKey] = 1;
-    return 1;
-    // ====================================================================
-  }
-
-  // If the first and last character match, then...
-  if (str.at(leftLimit) == str.at(rightLimit)) {
-    // move left limit to the right
-    int newLeft = leftLimit+1;
-    // move right limit to the left
-    int newRight = rightLimit-1;
-
-    // Solve the middle subproblem.
-    int middleSubproblemResult = memoizedLongestPalindromeLength(memo, str, newLeft, newRight, startTime, maxDuration);
-
-    // (Base case note: Suppose that str had length 2, so after moving the indices,
-    //  now newLeft > newRight. Because we handled the crossing case already,
-    //  in that situation, middleSubproblemResult correctly gets value 0.)
-
-    // For reference, let's calculate the longest length possible in the
-    // middle substring range.
-    int middleMaxLength = newRight-newLeft+1;
-    // In the base case situation when the indices cross,
-    // we force this value to be 0 instead of negative.
-    if (middleMaxLength < 0) middleMaxLength = 0;
-
-    // If the middle subproblem result equals the entire length
-    // of the middle substring, then the middle substring is a palindrome.
-    // So, since the first and last outer characters match each other,
-    // the entire string between leftLimit and rightLimit is a palindrome.
-    if (middleSubproblemResult == middleMaxLength) {
-      int result = 2+middleSubproblemResult;
-
-      // This result, which we should memoize, is for the range between the
-      // original leftLimit and rightLimit. (It's not for the inner range
-      // between newLeft and newRight. The recursive call already memoized
-      // that.)
-
-      // ==================================================================
-      // EXAMPLE: This recursive case has already been memoized!
-      // (You DON'T need to edit this code section at all!
-      //  Just pay attention to what's happening here!)
-      memo[pairKey] = result;
-      return result;
-      // ==================================================================
+    // Check validity of indices for debugging. The indices shouldn't be negative
+    // unless it's the special base case where they cross during recursion.
+    // We handle that case further below.
+    if (leftLimit < 0 && leftLimit <= rightLimit)
+    {
+        throw std::runtime_error("leftLimit negative, but it's not the base case");
+    }
+    if (rightLimit < 0 && leftLimit <= rightLimit)
+    {
+        throw std::runtime_error("rightLimit negative, but it's not the base case");
     }
 
-    // Otherwise, don't return from the function yet!
-    // We continue executing the code below.
-  }
+    // Apart from that, in the following code, the std::string::at() function
+    // will throw an exception if an index is out of bounds.
 
-  // If we've reached this line in the function, we know the entire
-  // string between leftLimit and rightLimit, inclusive, is NOT a palindrome.
-  // That means we still need to try moving in each of the left limit
-  // and right limit, separately, and compare the results.
+    if (false)
+    {
+        // Debugging spam messages
+        int range = rightLimit - leftLimit + 1;
+        if (range < 0)
+            range = 0;
+        std::cout << "Considering substring: " << str.substr(leftLimit, range) << std::endl;
+        std::cout << " because l/r limits are: " << leftLimit << " " << rightLimit << std::endl;
+    }
 
-  // Move the right limit to the left and recurse.
-  int leftSubproblemResult = memoizedLongestPalindromeLength(memo, str, leftLimit, rightLimit-1, startTime, maxDuration);
-  // Move the left limit to the right and recurse.
-  int rightSubproblemResult = memoizedLongestPalindromeLength(memo, str, leftLimit+1, rightLimit, startTime, maxDuration);
-  // Return whichever result was greater.
-  // We can also store this result for memoization purposes.
-  int greaterResult = std::max(leftSubproblemResult,rightSubproblemResult);
+    // It's possible that a student could make a mistake in this function that
+    // would cause it to take even longer than brute force (or never finish).
+    const auto currentTime = getTimeNow();
+    const auto timeElapsed = getMilliDuration(startTime, currentTime);
+    if (timeElapsed > maxDuration)
+    {
+        throw TooSlowException("taking too long");
+    }
 
-  // =======================================================================
-  // EXERCISE 3 - PART B - YOUR CODE HERE!
-  //
-  return -1337; // Hint: You need to change this!
-  // =======================================================================
+    // Here's the memoization key for this pair of limit integers.
+    // IntPair is our type alias for std::pair<int, int>
+    const IntPair pairKey = std::make_pair(leftLimit, rightLimit);
+
+    // The count() function of unordered_map tells us if the key is already in the map.
+    // It returns 1 if found and otherwise 0. (These values convert to true and false.)
+    // (It's important to not just use memo[pairKey] in this check, because that will
+    //  create the entry with a default value if it doesn't already exist!)
+    if (memo.count(pairKey))
+    {
+
+        // ====================================================================
+        // EXERCISE 3 - PART A - YOUR CODE HERE!
+
+        // We've calculated this subproblem before, and that's why there's a key
+        // for it in the memoization table already. We won't calculate anything
+        // new in this case. So, we also won't store anything new in the table in
+        // this case, only return what's already stored at this key in the map.
+
+        return -1337; // Hint: You need to change this!
+                      // ====================================================================
+    }
+
+    // If the memoization table didn't have an entry for this key yet,
+    // then we're solving this subproblem for the first time.
+    // Below, we'll record our result to make sure we don't have to solve it again.
+
+    // Base case: Return 0 as the longest palindrome length when the indices cross.
+    // This case could be triggered during our recursive steps defined below.
+    if (leftLimit > rightLimit)
+    {
+        // Since this case already returns in constant time (that is, O(1) time)
+        // without recursing further, we don't really need to memoize it,
+        // but we will anyway as an example. In practice, we could save memory
+        // by not memoizing unless necessary. Another reason why you might want
+        // to memoize every subproblem is to help in reconstructing what the
+        // optimal solution was, after the algorithm finishes running.
+
+        // ====================================================================
+        // EXAMPLE: This base case has already been memoized!
+        // (You DON'T need to edit this code section at all!
+        //  Just pay attention to what's happening here!)
+        memo[pairKey] = 0;
+        return 0;
+        // ====================================================================
+    }
+
+    // Otherwise, we know that leftLimit <= rightLimit.
+
+    // A single-character substring is a palindrome of size 1.
+    // We include the character check with .at() to make sure the string isn't
+    // empty and that the indices are valid.
+    if (leftLimit == rightLimit && str.at(leftLimit) == str.at(rightLimit))
+    {
+        // Another O(1) return case that we'll memoize anyway for completeness.
+
+        // ====================================================================
+        // EXAMPLE: This base case has already been memoized!
+        // (You DON'T need to edit this code section at all!
+        //  Just pay attention to what's happening here!)
+        memo[pairKey] = 1;
+        return 1;
+        // ====================================================================
+    }
+
+    // If the first and last character match, then...
+    if (str.at(leftLimit) == str.at(rightLimit))
+    {
+        // move left limit to the right
+        int newLeft = leftLimit + 1;
+        // move right limit to the left
+        int newRight = rightLimit - 1;
+
+        // Solve the middle subproblem.
+        int middleSubproblemResult = memoizedLongestPalindromeLength(memo, str, newLeft, newRight, startTime, maxDuration);
+
+        // (Base case note: Suppose that str had length 2, so after moving the indices,
+        //  now newLeft > newRight. Because we handled the crossing case already,
+        //  in that situation, middleSubproblemResult correctly gets value 0.)
+
+        // For reference, let's calculate the longest length possible in the
+        // middle substring range.
+        int middleMaxLength = newRight - newLeft + 1;
+        // In the base case situation when the indices cross,
+        // we force this value to be 0 instead of negative.
+        if (middleMaxLength < 0)
+            middleMaxLength = 0;
+
+        // If the middle subproblem result equals the entire length
+        // of the middle substring, then the middle substring is a palindrome.
+        // So, since the first and last outer characters match each other,
+        // the entire string between leftLimit and rightLimit is a palindrome.
+        if (middleSubproblemResult == middleMaxLength)
+        {
+            int result = 2 + middleSubproblemResult;
+
+            // This result, which we should memoize, is for the range between the
+            // original leftLimit and rightLimit. (It's not for the inner range
+            // between newLeft and newRight. The recursive call already memoized
+            // that.)
+
+            // ==================================================================
+            // EXAMPLE: This recursive case has already been memoized!
+            // (You DON'T need to edit this code section at all!
+            //  Just pay attention to what's happening here!)
+            memo[pairKey] = result;
+            return result;
+            // ==================================================================
+        }
+
+        // Otherwise, don't return from the function yet!
+        // We continue executing the code below.
+    }
+
+    // If we've reached this line in the function, we know the entire
+    // string between leftLimit and rightLimit, inclusive, is NOT a palindrome.
+    // That means we still need to try moving in each of the left limit
+    // and right limit, separately, and compare the results.
+
+    // Move the right limit to the left and recurse.
+    int leftSubproblemResult = memoizedLongestPalindromeLength(memo, str, leftLimit, rightLimit - 1, startTime, maxDuration);
+    // Move the left limit to the right and recurse.
+    int rightSubproblemResult = memoizedLongestPalindromeLength(memo, str, leftLimit + 1, rightLimit, startTime, maxDuration);
+    // Return whichever result was greater.
+    // We can also store this result for memoization purposes.
+    int greaterResult = std::max(leftSubproblemResult, rightSubproblemResult);
+
+    // =======================================================================
+    // EXERCISE 3 - PART B - YOUR CODE HERE!
+    //
+    return -1337; // Hint: You need to change this!
+                  // =======================================================================
 }
-

@@ -5,7 +5,7 @@
  *
  * @author Eric Huber
  *
-**/
+ **/
 
 // --------------------------------------------------------------
 // This file has some common includes and helper functions
@@ -16,11 +16,11 @@
 // be included multiple times per compilation unit by mistake.
 #pragma once
 
-#include <string> // for std::string
-#include <vector> // for std::vector
-#include <utility> // for std::pair
+#include <string>        // for std::string
+#include <vector>        // for std::vector
+#include <utility>       // for std::pair
 #include <unordered_map> // for std::unordered_map
-#include <chrono> // for std::chrono::high_resolution_clock
+#include <chrono>        // for std::chrono::high_resolution_clock
 
 // ------------------------------------------------------------------------
 //  About the timer code
@@ -32,13 +32,15 @@
 // https://en.cppreference.com/w/cpp/chrono/high_resolution_clock/now
 // https://en.cppreference.com/w/cpp/chrono/duration/duration_cast
 using timeUnit = std::chrono::time_point<std::chrono::high_resolution_clock>;
-static inline timeUnit getTimeNow() noexcept {
-  return std::chrono::high_resolution_clock::now();
+static inline timeUnit getTimeNow() noexcept
+{
+    return std::chrono::high_resolution_clock::now();
 }
 template <typename T>
-static double getMilliDuration(T start_time, T stop_time) {
-  std::chrono::duration<double, std::milli> dur_ms = stop_time - start_time;
-  return dur_ms.count();
+static double getMilliDuration(T start_time, T stop_time)
+{
+    std::chrono::duration<double, std::milli> dur_ms = stop_time - start_time;
+    return dur_ms.count();
 }
 // ------------------------------------------------------------------------
 
@@ -47,7 +49,7 @@ static double getMilliDuration(T start_time, T stop_time) {
 // -----------------
 // This "pair" type is a templated way to create a new type that pairs any
 // two other types together as a unit.
-// 
+//
 // When you want to construct a std::pair, there is a templated helper
 // function that can construct ANY variation of pair for us. For example:
 //
@@ -88,61 +90,62 @@ using LengthMemo = std::unordered_map<IntPair, int>;
 // and they will be converted to lowercase. Hyphens (-) and apostrophes (')
 // are included in words where they are found, so strings like "alice" and
 // "alice's" are counted separately as unique words.
-StringVec loadBookStrings(unsigned int min_word_length=5);
+StringVec loadBookStrings(unsigned int min_word_length = 5);
 
 // This helper function can be used to sort records of word counts
 // based on the count. This is used in sortWordCounts.
-bool wordCountComparator(const StringIntPair& x, const StringIntPair& y);
+bool wordCountComparator(const StringIntPair &x, const StringIntPair &y);
 
 // sortWordCounts produces a fresh vector containing sorted copies
 // of the word count records from wordcount_map.
-StringIntPairVec sortWordCounts(const StringIntMap& wordcount_map);
+StringIntPairVec sortWordCounts(const StringIntMap &wordcount_map);
 
 // -------------------------------------------------------------------------
 // makeWordCounts takes a vector of strings and counts the number of occurences
 // of each unique string.
 // NOTE: You will implement this function yourself in UnorderedMapExercises.cpp
-StringIntMap makeWordCounts(const StringVec& words);
+StringIntMap makeWordCounts(const StringVec &words);
 // -------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------
 // lookupWithFallback is a wrapper function for safely performing read-only
 // lookups in a std::unordered_map object.
 // NOTE: You will implement this function yourself in UnorderedMapExercises.cpp
-int lookupWithFallback(const StringIntMap& wordcount_map, const std::string& key, int fallbackVal);
+int lookupWithFallback(const StringIntMap &wordcount_map, const std::string &key, int fallbackVal);
 // -------------------------------------------------------------------------
 
 // These functions make lists (actually, std::vector) of the most common and least common
 // words found in the book. As input, these take the result of sortWordCounts.
 // (These don't try to combine variations of words like "alice" and "alice's"
 // in any way, so it's not entirely accurate.)
-StringIntPairVec getBottomWordCounts(const StringIntPairVec& sorted_wordcounts, unsigned int max_words=20);
-StringIntPairVec getTopWordCounts(const StringIntPairVec& sorted_wordcounts, unsigned int max_words=20);
+StringIntPairVec getBottomWordCounts(const StringIntPairVec &sorted_wordcounts, unsigned int max_words = 20);
+StringIntPairVec getTopWordCounts(const StringIntPairVec &sorted_wordcounts, unsigned int max_words = 20);
 
 // longestPalindromeLength uses brute-force recursion to calculate the
 // longest palindrome substring within str, based on the left and right index
 // limits given. It also takes clock information to prevent running too long,
 // in some cases.
-int longestPalindromeLength(const std::string& str, int leftLimit, int rightLimit, timeUnit startTime, double maxDuration);
+int longestPalindromeLength(const std::string &str, int leftLimit, int rightLimit, timeUnit startTime, double maxDuration);
 
 // -------------------------------------------------------------------------
 // This is a "memoized" version of the longestPalindromeLength function.
 // (Please read the instructions PDF for information about what "memoization"
 //  is all about.)
 // NOTE: You will implement part of this function yourself in UnorderedMapExercises.cpp
-int memoizedLongestPalindromeLength(LengthMemo& memo, const std::string& str, int leftLimit, int rightLimit, timeUnit startTime, double maxDuration);
+int memoizedLongestPalindromeLength(LengthMemo &memo, const std::string &str, int leftLimit, int rightLimit, timeUnit startTime, double maxDuration);
 // -------------------------------------------------------------------------
 
 // reconstructPalindrome returns a copy of the longest palindrome within str,
 // based on the information provided by the memoization table that has been
 // previously calculated by memoizedLongestPalindromeLength.
-std::string reconstructPalindrome(const LengthMemo& memo, const std::string& str);
+std::string reconstructPalindrome(const LengthMemo &memo, const std::string &str);
 
 // The timer code we use to prevent your functions from running too long by mistake
 // can throw this exception to show what has happened. The unit tests handle this
 // situation for you.
-class TooSlowException : public std::runtime_error {
+class TooSlowException : public std::runtime_error
+{
 public:
-  // import constructor from the base class
-  using std::runtime_error::runtime_error;
+    // import constructor from the base class
+    using std::runtime_error::runtime_error;
 };
