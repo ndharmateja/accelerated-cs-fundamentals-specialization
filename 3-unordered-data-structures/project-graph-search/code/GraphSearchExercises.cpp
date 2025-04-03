@@ -48,13 +48,14 @@
 // a set of the unique edges only.
 int GridGraph::countEdges() const
 {
+    // We add the number of neighbours of each vertex to numEdges
     int numEdges = 0;
+    for (const auto &pair : adjacencyMap)
+        numEdges += pair.second.size();
 
-    // =======================================================================
-    // TODO: Your code here!
-    // =======================================================================
-
-    return numEdges;
+    // We have to divide by 2 as each edge is being counted twice
+    // As sum of degrees of all vertices = 2 * numEdges
+    return numEdges / 2;
 }
 
 // GridGraph::removePoint:
