@@ -90,21 +90,17 @@ void GridGraph::removePoint(const IntPair &p1)
     // ever made, but the small speed benefits of that might not be worth the
     // risk of making mistakes! Until then, it's okay to make working copies
     // of small pieces of data like this.)
-
     const GridGraph::NeighborSet originalNeighbors = adjacencyMap.at(p1);
-
-    // =======================================================================
-    // TODO: Your code here!
-    // =======================================================================
+    for (const auto &neighbour : originalNeighbors)
+    {
+        adjacencyMap[neighbour].erase(p1);
+    }
 
     // Finally, for the one point we are removing, erase the point key itself
     // from adjacencyMap directly. (There is no other GridGraph helper function
     // for this, because that's what we're implementing right now! We need to
     // use adjacencyMap's own erase function directly to erase the key.)
-
-    // =======================================================================
-    // TODO: Your code here!
-    // =======================================================================
+    adjacencyMap.erase(p1);
 }
 
 // =========================================================================
