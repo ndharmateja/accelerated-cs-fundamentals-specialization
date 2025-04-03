@@ -5,7 +5,7 @@
  *
  * @author Eric Huber
  *
-**/
+ **/
 
 // We use the pragma once directive to ensure that this header won't
 // be included multiple times per compilation unit by mistake.
@@ -15,7 +15,7 @@
 #include <vector> // for std::vector
 #include <list>
 #include <queue>
-#include <utility> // for std::pair
+#include <utility>       // for std::pair
 #include <unordered_map> // for std::unordered_map
 
 // For simple test randomization:
@@ -24,7 +24,7 @@
 //  generators in the standard library, with better statistical properties,
 //  but it's beyond the scope of this course.)
 #include <cstdlib> // for srand(), rand()
-#include <ctime> // for time()
+#include <ctime>   // for time()
 
 // We're going to need to specify how to hash a pair of integers,
 // because the standard library doesn't support this natively.
@@ -44,8 +44,7 @@
 #include "PuzzleState.h"
 
 // This function is defined in GraphSearchExercises.cpp
-std::list<IntPair> graphBFS(const IntPair& start, const IntPair& goal, const GridGraph& graph);
+std::list<IntPair> graphBFS(const IntPair &start, const IntPair &goal, const GridGraph &graph);
 
 // This function is defined in GraphSearchExercises.cpp
-std::list<PuzzleState> puzzleBFS(const PuzzleState& start, const PuzzleState& goal);
-
+std::list<PuzzleState> puzzleBFS(const PuzzleState &start, const PuzzleState &goal);
